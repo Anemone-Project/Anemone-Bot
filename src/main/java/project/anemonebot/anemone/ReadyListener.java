@@ -7,14 +7,10 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
-import java.util.List;
 
 
 public class ReadyListener extends ListenerAdapter {
@@ -33,11 +29,8 @@ public class ReadyListener extends ListenerAdapter {
     }
 
 
-
-
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
-    {
+    public void onMessageReceived(MessageReceivedEvent event) {
         JDA jda = event.getJDA();
         long responseNumber = event.getResponseNumber();
 
@@ -49,18 +42,16 @@ public class ReadyListener extends ListenerAdapter {
 
         boolean bot = author.isBot();
 
-        if(event.isFromType(ChannelType.TEXT) && !author.isBot() && msg.startsWith("!Hello"))
-        {
+        if (event.isFromType(ChannelType.TEXT) && !author.isBot() && msg.startsWith("!Hello")) {
             messageChannel.sendMessage("Hello " + author.getName()).queue();
         }
 
-        if(event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete"))
-        {
+        if (event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete")) {
             String messageID = msg.replaceAll("!delete", "");
             messageChannel.deleteMessageById(messageID).queue();
-            }
-
         }
+
     }
+}
 
 
