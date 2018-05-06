@@ -3,13 +3,12 @@ package project.anemonebot.anemone;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class ReadyListener extends ListenerAdapter {
 
-    public static void main(String[] args) {
+    public void initializeJDA() {
         try {
             JDA jda = new JDABuilder(AccountType.BOT)
                     .setToken("NDQwNTM4MzQ4NDg2OTE4MTY0.DcjLNw.tRLEmI2U70JjGNV00YQUT-kaxU8")
@@ -33,11 +32,8 @@ public class ReadyListener extends ListenerAdapter {
     }
 
 
-
-
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
-    {
+    public void onMessageReceived(MessageReceivedEvent event) {
         JDA jda = event.getJDA();
         long responseNumber = event.getResponseNumber();
 
@@ -49,18 +45,30 @@ public class ReadyListener extends ListenerAdapter {
 
         boolean bot = author.isBot();
 
-        if(event.isFromType(ChannelType.TEXT) && !author.isBot() && msg.startsWith("!Hello"))
-        {
+        if (event.isFromType(ChannelType.TEXT) && !author.isBot() && msg.startsWith("!Hello")) {
             messageChannel.sendMessage("Hello " + author.getName()).queue();
         }
 
-        if(event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete"))
-        {
+        if (event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete")) {
             String messageID = msg.replaceAll("!delete", "");
             messageChannel.deleteMessageById(messageID).queue();
-            }
-
         }
     }
+
+    @Override
+    public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
+        JDA jda = event.getJDA();
+        User user = event.getEntity();
+        TextChannel channel = jda.getTextChannels().get(0);
+        OnlineStatus oldOnlineStatus = event.getOldOnlineStatus();
+        OnlineStatus newOnlineStatus = event.getNewOnlineStatus();
+
+        if(oldOnlineStatus.getKey().equals("offline") && newOnlineStatus.getKey().equals("online")){
+            channel.sendMessage("Welcome back " + user.getName()).queue();
+        }
+    }
+
+
+}
 
 
