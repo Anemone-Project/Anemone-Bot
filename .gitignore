@@ -25,4 +25,5 @@
 /.nb-gradle/
 
 ### Anemone ###
-anemone-token.txt
+
+anemonetoken.txt
