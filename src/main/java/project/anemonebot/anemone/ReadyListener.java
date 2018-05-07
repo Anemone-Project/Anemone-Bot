@@ -5,15 +5,11 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
-import java.util.List;
 
 
 public class ReadyListener extends ListenerAdapter {
@@ -63,7 +59,7 @@ public class ReadyListener extends ListenerAdapter {
         OnlineStatus oldOnlineStatus = event.getOldOnlineStatus();
         OnlineStatus newOnlineStatus = event.getNewOnlineStatus();
 
-        if(oldOnlineStatus.getKey().equals("offline") && newOnlineStatus.getKey().equals("online")){
+        if (oldOnlineStatus.getKey().equals("offline") && newOnlineStatus.getKey().equals("online")) {
             channel.sendMessage("Welcome back " + user.getName()).queue();
         }
     }
