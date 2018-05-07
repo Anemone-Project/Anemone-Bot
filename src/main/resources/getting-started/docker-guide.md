@@ -1,4 +1,4 @@
-##This is a quick guide to build & run this application in a docker container.
+## This is a quick guide to build & run this application in a docker container.
 
    **Prerequisit**
    <br>
@@ -21,6 +21,13 @@
    `docker run -p <ApplicationPort>:<ContainerPort> <ImageName>`
    
    e.g: `docker run -p 8080:8080 anemone-bot`
-
+   
+   <b> Known issue </b>
+   -
+   The docker Json.config files DNS connection is by default set to null.
+   This will prevent docker from building the image file. 
+   
+   <br>
+   Modify this to a working DNS.  e.g:  `8.8.8.8` 
 
    
