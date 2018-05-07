@@ -4,6 +4,15 @@
    <br>
    - Download [Docker](https://www.docker.com/) and follow setup.
    
+   
+  -
+   
+   **For easy setup inside IntelliJ**
+  
+   - Download Docker plugin for IntelliJ by going to: 
+     <br>
+     File > Settings > Plugins > Install Jetbrains plugin > Docker Integration.
+   
    <b> Step one </b> 
    - 
    Build image from root folder with the following cmd: 
