@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import project.anemonebot.anemone.util.TokenReader;
 
 import javax.security.auth.login.LoginException;
 import java.util.List;
@@ -18,10 +20,12 @@ import java.util.List;
 
 public class ReadyListener extends ListenerAdapter {
 
+    TokenReader tokenReader = new TokenReader();
+
     public void initializeJDA() {
         try {
             JDA jda = new JDABuilder(AccountType.BOT)
-                    .setToken("NDQwNTM4MzQ4NDg2OTE4MTY0.DcjLNw.tRLEmI2U70JjGNV00YQUT-kaxU8")
+                    .setToken(tokenReader.readAnemoneToken())
                     .addEventListener(new ReadyListener())
                     .buildBlocking();
         } catch (LoginException e) {
