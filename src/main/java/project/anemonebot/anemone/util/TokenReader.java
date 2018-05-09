@@ -16,6 +16,11 @@ public class TokenReader {
 
     Logger log = LogManager.getLogger(getClass());
 
+
+    /**
+     * Method for reading token from text file.
+     * @return String token.
+     */
     public String readAnemoneToken(){
         {
             try {
