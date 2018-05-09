@@ -8,7 +8,6 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import project.anemonebot.anemone.util.TokenReader;
 
 import javax.security.auth.login.LoginException;
@@ -18,6 +17,10 @@ public class ReadyListener extends ListenerAdapter {
 
     TokenReader tokenReader = new TokenReader();
 
+
+    /**
+     * Initializes a connection to Discord and the channel as well as correct settings.
+     */
     public void initializeJDA() {
         try {
             JDA jda = new JDABuilder(AccountType.BOT)
@@ -31,7 +34,12 @@ public class ReadyListener extends ListenerAdapter {
         }
     }
 
-
+    /**
+     * Listener for Discord Channel. Called when someone writes in the channel.
+     *
+     * Currently holds logic for the bot commands, these will later be moved to a dedicated service.
+     * @param event
+     */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         JDA jda = event.getJDA();
@@ -55,6 +63,11 @@ public class ReadyListener extends ListenerAdapter {
         }
     }
 
+
+    /**
+     * Listener for Discord Channel. Called when someone changes their status.
+     * @param event
+     */
     @Override
     public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
         JDA jda = event.getJDA();
