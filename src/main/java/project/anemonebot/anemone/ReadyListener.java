@@ -5,7 +5,10 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.DisconnectEvent;
+import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import project.anemonebot.anemone.util.TokenReader;
@@ -16,6 +19,7 @@ import javax.security.auth.login.LoginException;
 public class ReadyListener extends ListenerAdapter {
 
     TokenReader tokenReader = new TokenReader();
+    AnemoneBotService service = new AnemoneBotService();
 
 
     /**
@@ -57,9 +61,53 @@ public class ReadyListener extends ListenerAdapter {
             messageChannel.sendMessage("Hello " + author.getName()).queue();
         }
 
-        if (event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete")) {
+        else if (event.isFromType(ChannelType.TEXT) && msg.startsWith("!delete")) {
             String messageID = msg.replaceAll("!delete", "");
             messageChannel.deleteMessageById(messageID).queue();
+        }
+
+        else if(event.isFromType(ChannelType.TEXT) && msg.startsWith("!RegisterGame")) {
+            PrivateChannel privchannel = author.openPrivateChannel().complete();
+            privchannel.sendMessage("Wrong command.").queue();
+        }
+
+        else if(event.isFromType(ChannelType.TEXT) && msg.toLowerCase().startsWith("!rolldice")){
+            String firstValueString = null;
+            String lastValueString = null;
+            int firstValue;
+            int lastValue;
+
+            msg = msg.trim();
+            if(msg.length() != 9) {
+                try {
+                    firstValueString = msg.substring(msg.indexOf(" ") + 1, msg.lastIndexOf((" ")));
+                    lastValueString = msg.substring(msg.lastIndexOf(" ") + 1);
+                } catch (StringIndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(null != firstValueString && null != lastValueString){
+                firstValue = Integer.parseInt(firstValueString);
+                lastValue = Integer.parseInt(lastValueString);
+                messageChannel.sendMessage(author.getName() + " rolled: " + service.rollDice(firstValue, lastValue) + " (" + firstValue + "-" + lastValue + ")").queue();
+            }
+            else if(null != firstValueString){
+                firstValue = Integer.parseInt(firstValueString);
+                messageChannel.sendMessage(author.getName() + " rolled: " + service.rollDice(firstValue) + " (0" + "-" + firstValue + ")").queue();
+            }
+            else{
+                messageChannel.sendMessage(author.getName() + " rolled: " + service.rollDice() + " (0-100)").queue();
+            }
+
+        }
+        else if(event.isFromType(ChannelType.TEXT) && msg.equalsIgnoreCase("!help")){
+            StringBuilder helpString = new StringBuilder();
+            helpString.append("!Rolldice {x} {y} \nRolls a dice, results are shown in the channel. \nParameter x: Lowest possible value \nParameter y: Highest possible value.\nParameters required: None");
+            helpString.append("\n\n!Delete {x} \nDeletes the message with the specified ID. \nParameter x: Message ID. \nParameters required: x");
+
+            messageChannel.sendMessage(helpString).queue();
         }
     }
 
@@ -80,6 +128,27 @@ public class ReadyListener extends ListenerAdapter {
             channel.sendMessage("Welcome back " + user.getName()).queue();
         }
     }
+
+    /**
+     *
+     * @param event
+     */
+    @Override
+    public void onPrivateMessageReceived (PrivateMessageReceivedEvent event)
+    {
+
+    }
+
+    /**
+     * Listener for Discord Channel. Called when bot is operational.
+     * @param event
+     */
+    @Override
+    public void onReady(ReadyEvent event){
+        TextChannel channel = event.getJDA().getTextChannels().get(0);
+        channel.sendMessage("Anemone Bot Online.").queue();
+    }
+
 
 
 }

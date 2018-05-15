@@ -23,7 +23,7 @@ public class TokenReader {
     public String readAnemoneToken(){
         {
             try {
-                fileReader = new FileReader("anemonetoken.txt");
+                fileReader = new FileReader("src/main/resources/anemonetoken.txt");
                 bufferedReader = new BufferedReader(fileReader);
                 String token = bufferedReader.readLine();
                 log.debug("Inside TokenReader with token: " + token);
