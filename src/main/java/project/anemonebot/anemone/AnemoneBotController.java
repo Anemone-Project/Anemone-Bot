@@ -3,16 +3,15 @@ package project.anemonebot.anemone;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@RequestMapping(value = "/anemone")
 public class AnemoneBotController {
 
     Logger logger = LogManager.getLogger(getClass());
+    AnemoneBotService service = new AnemoneBotService();
 
     /**
      * Endpoint for testing connection to micro-service.
@@ -39,8 +38,10 @@ public class AnemoneBotController {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:26501/anemone/anemoneintergrationtest/" + word, String.class);
 
         return responseEntity.getBody();
+    }
 
-
-
+    @RequestMapping(value = "/receivegithubresponse", method = RequestMethod.POST)
+    public void receiveGithubResponse(@RequestBody String message){
+        service.postGithubResponse(message);
     }
 }
