@@ -5,21 +5,21 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.DisconnectEvent;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.springframework.stereotype.Component;
 import project.anemonebot.anemone.util.TokenReader;
 
 import javax.security.auth.login.LoginException;
 
-
+@Component
 public class ReadyListener extends ListenerAdapter {
 
-    TokenReader tokenReader = new TokenReader();
-    AnemoneBotService service = new AnemoneBotService();
+    private TokenReader tokenReader = new TokenReader();
+    private AnemoneBotService service = new AnemoneBotService();
 
 
     /**
@@ -148,8 +148,6 @@ public class ReadyListener extends ListenerAdapter {
         TextChannel channel = event.getJDA().getTextChannels().get(0);
         channel.sendMessage("Anemone Bot Online.").queue();
     }
-
-
 
 }
 

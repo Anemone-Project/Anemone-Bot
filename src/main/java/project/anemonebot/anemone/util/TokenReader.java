@@ -27,6 +27,8 @@ public class TokenReader {
                 bufferedReader = new BufferedReader(fileReader);
                 String token = bufferedReader.readLine();
                 log.debug("Inside TokenReader with token: " + token);
+                bufferedReader.close();
+                fileReader.close();
                 return token;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
